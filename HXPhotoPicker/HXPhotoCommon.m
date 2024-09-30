@@ -163,7 +163,12 @@ static id instance;
                 language = @"ko";
             } break;
             case HXPhotoLanguageTypeEn : {
+                // 英语
                 language = @"en";
+            } break;
+            case HXPhotoLanguageTypeId : {
+                // 印尼语
+                language = @"id";
             } break;
             default : {
                 if ([language hasPrefix:@"en"]) {

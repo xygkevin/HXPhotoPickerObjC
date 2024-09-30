@@ -575,6 +575,10 @@
                     // 英文
                     _barTitle = [NSString stringWithFormat:@"%@ %@",[self.creationDate hx_dateStringWithFormat:@"MMM dd"],[self.creationDate hx_getNowWeekday]];
                 } break;
+                case HXPhotoLanguageTypeId : {
+                    // 印尼语
+                    _barTitle = [NSString stringWithFormat:@"%@ %@",[self.creationDate hx_dateStringWithFormat:@"dd MMM"],[self.creationDate hx_getNowWeekday]];
+                } break;
                 default : {
                     NSString *language = [NSLocale preferredLanguages].firstObject;
                     if ([language hasPrefix:@"zh"] ||
@@ -606,6 +610,10 @@
                 case HXPhotoLanguageTypeEn : {
                     // 英文
                     _barTitle = [self.creationDate hx_dateStringWithFormat:@"MMM dd, yyyy"];
+                } break;
+                case HXPhotoLanguageTypeId : {
+                    // 英文
+                    _barTitle = [self.creationDate hx_dateStringWithFormat:@"dd MMM yyyy"];
                 } break;
                 default : {
                     NSString *language = [NSLocale preferredLanguages].firstObject;

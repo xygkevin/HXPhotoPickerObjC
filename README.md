@@ -571,7 +571,7 @@ HXPhotoLanguageTypeTc,      // 中文繁体
 HXPhotoLanguageTypeJa,      // 日文
 HXPhotoLanguageTypeKo,      // 韩文
 HXPhotoLanguageTypeEn       // 英文
-
+HXPhotoLanguageTypeId       // 印尼语
 /**
 语言类型
 默认 跟随系统
