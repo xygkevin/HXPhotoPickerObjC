@@ -86,9 +86,7 @@
     self.bgView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
     
     self.contentView.layer.masksToBounds = YES;
-    if (HX_IOS11_Later) {
-        [self.contentView hx_radiusWithRadius:8 corner:UIRectCornerTopLeft | UIRectCornerTopRight];
-    }
+    [self.contentView hx_radiusWithRadius:8 corner:UIRectCornerTopLeft | UIRectCornerTopRight];
     
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) {
@@ -428,9 +426,6 @@
     self.imageView.frame = CGRectMake(2.5, 2.5, self.hx_w - 5, self.hx_h - 5);
     self.bgMaskView.frame = CGRectMake(-5, -5, self.hx_w + 10, self.hx_h + 10);
     self.loadingView.center = CGPointMake(self.hx_w / 2, self.hx_h / 2);
-    if (HX_IOS11_Earlier) {
-        [self.bgMaskView hx_radiusWithRadius:5.f corner:UIRectCornerAllCorners];
-    }
 }
 
 - (UIImageView *)imageView {
@@ -446,9 +441,7 @@
         _bgMaskView = [[UIView alloc] init];
         _bgMaskView.alpha = 0;
         _bgMaskView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3f];
-        if (HX_IOS11_Later) {
-            [_bgMaskView hx_radiusWithRadius:5.f corner:UIRectCornerAllCorners];
-        }
+        [_bgMaskView hx_radiusWithRadius:5.f corner:UIRectCornerAllCorners];
     }
     return _bgMaskView;
 }

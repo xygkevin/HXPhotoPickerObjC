@@ -13,6 +13,7 @@
 #import <sys/utsname.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AVFoundation/AVFoundation.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 #import <PhotosUI/PhotosUI.h>
 
@@ -79,20 +80,15 @@ NSString *const hx_kKeyContentIdentifier = @"com.apple.quicktime.content.identif
 + (BOOL)assetIsHEIF:(PHAsset *)asset {
     if (!asset) return NO;
     __block BOOL isHEIF = NO;
-    if (HX_IOS9Later) {
-        NSArray *resourceList = [PHAssetResource assetResourcesForAsset:asset];
-        [resourceList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            PHAssetResource *resource = obj;
-            NSString *UTI = resource.uniformTypeIdentifier;
-            if ([UTI isEqualToString:@"public.heif"] || [UTI isEqualToString:@"public.heic"]) {
-                isHEIF = YES;
-                *stop = YES;
-            }
-        }];
-    } else {
-        NSString *UTI = [asset valueForKey:@"uniformTypeIdentifier"];
-        isHEIF = [UTI isEqualToString:@"public.heif"] || [UTI isEqualToString:@"public.heic"];
-    }
+    NSArray *resourceList = [PHAssetResource assetResourcesForAsset:asset];
+    [resourceList enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        PHAssetResource *resource = obj;
+        NSString *UTI = resource.uniformTypeIdentifier;
+        if ([UTI isEqualToString:@"public.heif"] || [UTI isEqualToString:@"public.heic"]) {
+            isHEIF = YES;
+            *stop = YES;
+        }
+    }];
     return isHEIF;
 }
 + (void)fetchPhotosBytes:(NSArray *)photos completion:(void (^)(NSString *))completion
@@ -216,10 +212,8 @@ NSString *const hx_kKeyContentIdentifier = @"com.apple.quicktime.content.identif
         if (status == PHAuthorizationStatusLimited) {
             hx_showAlert(viewController, [NSBundle hx_localizedStringForKey:@"无法访问所有照片"], [NSBundle hx_localizedStringForKey:@"请在设置-隐私-相册中允许访问所有照片"], [NSBundle hx_localizedStringForKey:@"取消"], [NSBundle hx_localizedStringForKey:@"设置"], nil, ^{
                 NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-                if (@available(iOS 10.0, *)) {
+                if ([[UIApplication sharedApplication] canOpenURL:url]) {
                     [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-                }else {
-                    [[UIApplication sharedApplication] openURL:url];
                 }
             });
             return;;
@@ -228,10 +222,8 @@ NSString *const hx_kKeyContentIdentifier = @"com.apple.quicktime.content.identif
 #endif
     hx_showAlert(viewController, [NSBundle hx_localizedStringForKey:@"无法访问相册"], [NSBundle hx_localizedStringForKey:@"请在设置-隐私-相册中允许访问相册"], [NSBundle hx_localizedStringForKey:@"取消"], [NSBundle hx_localizedStringForKey:@"设置"], nil, ^{
         NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-        if (@available(iOS 10.0, *)) {
+        if ([[UIApplication sharedApplication] canOpenURL:url]) {
             [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-        }else {
-            [[UIApplication sharedApplication] openURL:url];
         }
     });
 }
@@ -267,12 +259,11 @@ NSString *const hx_kKeyContentIdentifier = @"com.apple.quicktime.content.identif
 }
 + (void)openSetting {
     NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-    if (@available(iOS 10.0, *)) {
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-    }else {
-        [[UIApplication sharedApplication] openURL:url];
     }
 }
+    
 + (void)exportEditVideoForAVAsset:(AVAsset *)asset
                         timeRange:(CMTimeRange)timeRange
                         exportPreset:(HXVideoEditorExportPreset)exportPreset
@@ -408,23 +399,6 @@ NSString *const hx_kKeyContentIdentifier = @"com.apple.quicktime.content.identif
                 }
                 return;
             }
-            if (!HX_IOS9Later) {
-                if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum([videoURL path])) {
-                    //保存相册
-                    UISaveVideoAtPathToSavedPhotosAlbum([videoURL path], nil, nil, nil);
-                    if (complete) {
-                        HXPhotoModel *photoModel = [HXPhotoModel photoModelWithVideoURL:videoURL];
-                        photoModel.creationDate = [NSDate date];
-                        photoModel.location = location;
-                        complete(photoModel, YES);
-                    }
-                }else {
-                    if (complete) {
-                        complete(nil, NO);
-                    }
-                }
-                return;
-            }
             NSError *error = nil;
             // 保存相片到相机胶卷
             __block PHObjectPlaceholder *createdAsset = nil;
@@ -500,16 +474,6 @@ NSString *const hx_kKeyContentIdentifier = @"com.apple.quicktime.content.identif
                 status == PHAuthorizationStatusDenied) {
                 if (complete) {
                     complete(nil, NO);
-                }
-                return;
-            }
-            if (!HX_IOS9Later) {
-                UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil);
-                if (complete) {
-                    HXPhotoModel *photoModel = [HXPhotoModel photoModelWithImage:photo];
-                    photoModel.creationDate = [NSDate date];
-                    photoModel.location = location;
-                    complete(photoModel, YES);
                 }
                 return;
             }
@@ -593,70 +557,9 @@ NSString *const hx_kKeyContentIdentifier = @"com.apple.quicktime.content.identif
     }
     
     return createCollection;
-} 
-+ (BOOL)isIphone6 {
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    
-    NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSASCIIStringEncoding];
-    if([platform isEqualToString:@"iPhone7,2"]){//6
-        return YES;
-    }
-    if ([platform isEqualToString:@"iPhone8,1"]) {//6s
-        return YES;
-    }
-    if([platform isEqualToString:@"iPhone9,1"] || [platform isEqualToString:@"iPhone9,3"]) {//7
-        return YES;
-    }
-    if([platform isEqualToString:@"iPhone10,1"] || [platform isEqualToString:@"iPhone10,4"]) {//8
-        return YES;
-    }
-    return NO;
 }
 
-+ (BOOL)platform {
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    
-    NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSASCIIStringEncoding];
-    BOOL have = NO;
-    if ([platform isEqualToString:@"iPhone8,1"]) { // iphone6s
-        have = YES;
-    }else if ([platform isEqualToString:@"iPhone8,2"]) { // iphone6s plus
-        have = YES;
-    }else if ([platform isEqualToString:@"iPhone9,1"]) { // iphone7
-        have = YES;
-    }else if ([platform isEqualToString:@"iPhone9,2"]) { // iphone7 plus
-        have = YES;
-    }else if ([platform isEqualToString:@"iPhone10,1"]) { // iphone7 plus
-        have = YES;
-    }else if ([platform isEqualToString:@"iPhone10,2"]) { // iphone7 plus
-        have = YES;
-    }else if ([platform isEqualToString:@"iPhone10,3"]) { // iphone7 plus
-        have = YES;
-    }else if ([platform isEqualToString:@"iPhone10,4"]) { // iphone7 plus
-        have = YES;
-    }else if ([platform isEqualToString:@"iPhone10,5"]) { // iphone7 plus
-        have = YES;
-    }else if ([platform isEqualToString:@"iPhone10,6"]) { // iphone7 plus
-        have = YES;
-    } 
-    return have;
-}
-+ (BOOL)isIphone12Mini {
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    
-    NSString *platform = [NSString stringWithCString:systemInfo.machine encoding:NSASCIIStringEncoding];
-    if([platform isEqualToString:@"iPhone13,1"]) {
-        return YES;
-    }else if ([platform isEqualToString:@"x86_64"] || [platform isEqualToString:@"i386"]) {
-        if (([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) && !HX_UI_IS_IPAD : NO)) {
-            return YES;
-        }
-    }
-    return NO;
-}
+
 + (BOOL)isRTLLanguage
 {
     return [NSLocale characterDirectionForLanguage:[[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode]] == NSLocaleLanguageDirectionRightToLeft;
@@ -824,7 +727,8 @@ NSString *const hx_kKeyContentIdentifier = @"com.apple.quicktime.content.identif
                 TargetWriteFilePath:(NSURL *)finalJPGPath
                          completion:(void (^ _Nullable)(BOOL success))completion {
     NSString * assetIdentifier = [HXPhotoCommon photoCommon].UUIDString;
-    CGImageDestinationRef dest = CGImageDestinationCreateWithURL((CFURLRef)finalJPGPath, kUTTypeJPEG, 1, nil);
+//    CGImageDestinationRef dest = CGImageDestinationCreateWithURL((CFURLRef)finalJPGPath, kUTTypeJPEG, 1, nil);
+    CGImageDestinationRef dest = CGImageDestinationCreateWithURL((CFURLRef)finalJPGPath, (__bridge CFStringRef)UTTypeJPEG.identifier, 1, nil);
     if (!dest) {
         if (completion) {
             completion(NO);
@@ -889,12 +793,7 @@ NSString *const hx_kKeyContentIdentifier = @"com.apple.quicktime.content.identif
     } else {
         NSSLog(@"Add video output error\n");
     }
-    NSString *videoCodeec;
-    if (@available(iOS 11.0, *)) {
-        videoCodeec = AVVideoCodecTypeH264;
-    } else {
-        videoCodeec = AVVideoCodecH264;
-    }
+    NSString *videoCodeec = AVVideoCodecTypeH264;
     NSDictionary * outputSetting = @{AVVideoCodecKey: videoCodeec,
                                      AVVideoWidthKey: [NSNumber numberWithFloat:videoTrack.naturalSize.width],
                                      AVVideoHeightKey: [NSNumber numberWithFloat:videoTrack.naturalSize.height]
@@ -1102,26 +1001,84 @@ NSString *const hx_kKeyContentIdentifier = @"com.apple.quicktime.content.identif
 }
     
     
-+ (CGFloat)getStatusBarHeight {
-    CGFloat statusBarHeight = 0;
-    if (@available(iOS 13.0, *)) {
-        UIStatusBarManager *statusBarManager = [UIApplication sharedApplication].windows.firstObject.windowScene.statusBarManager;
-        statusBarHeight = statusBarManager.statusBarFrame.size.height;
-        if ([HXPhotoTools isIphone12Mini]) {
-            statusBarHeight = 50;
-        }else {
-            if ([UIApplication sharedApplication].statusBarHidden) {
-                statusBarHeight = HX_IS_IPhoneX_All ? 44: 20;
-            }
-        }
-    }
-    else {
-        if ([UIApplication sharedApplication].statusBarHidden) {
-            statusBarHeight = HX_IS_IPhoneX_All ? 44: 20;
-        }else {
-            statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-        }
-    }
-    return statusBarHeight;
++ (CGFloat)navStatusBarHeight {
+    UIStatusBarManager *statusBarManager = ((UIWindowScene *)[UIApplication sharedApplication].connectedScenes.allObjects.firstObject).statusBarManager;
+    return statusBarManager.statusBarFrame.size.height;
 }
+    
++ (CGFloat)navBarHeight {
+    CGFloat height = 44;
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        height = 50;
+    }
+    return [self navStatusBarHeight] + height;
+}
+    
++ (NSString *)deviceModel {
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    return [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+}
+    
+    /// 凹口屏幕
++ (BOOL)isNotchScreen {
+    if ([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPhone) {
+        return NO;
+    }
+    NSString *model = [self deviceModel];
+    NSArray *notchDevices = @[
+        @"iPhone10,3", // iPhone X (GSM)
+        @"iPhone10,6", // iPhone X (Global)
+        @"iPhone11,2", // iPhone XS
+        @"iPhone11,4", // iPhone XS Max (China)
+        @"iPhone11,6", // iPhone XS Max
+        @"iPhone11,8", // iPhone XR
+        @"iPhone12,1", // iPhone 11
+        @"iPhone12,3", // iPhone 11 Pro
+        @"iPhone12,5", // iPhone 11 Pro Max
+        @"iPhone13,1", // iPhone 12 mini
+        @"iPhone13,2", // iPhone 12
+        @"iPhone13,3", // iPhone 12 Pro
+        @"iPhone13,4", // iPhone 12 Pro Max
+        @"iPhone14,4", // iPhone 13 mini
+        @"iPhone14,5", // iPhone 13
+        @"iPhone14,2", // iPhone 13 Pro
+        @"iPhone14,3", // iPhone 13 Pro Max
+        @"iPhone14,7", // iPhone 14
+        @"iPhone14,8", // iPhone 14 Plus
+    ];
+    return [notchDevices containsObject:model];
+}
+    
+    /// 药丸屏幕
++ (BOOL)isPillScreen {
+    if ([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPhone) {
+        return NO;
+    }
+    NSString *model = [self deviceModel];
+    NSArray *pillDevices = @[
+        @"iPhone15,2", // iPhone 14 Pro
+        @"iPhone15,3", // iPhone 14 Pro Max
+        @"iPhone15,4", // iPhone 15
+        @"iPhone15,5", // iPhone 15 Plus
+        @"iPhone16,1", // iPhone 15 Pro
+        @"iPhone16,2", // iPhone 15 Pro Max
+        @"iPhone17,3", // iPhone 16
+        @"iPhone17,4", // iPhone 16 Plus
+        @"iPhone17,1", // iPhone 16 Pro
+        @"iPhone17,2"  // iPhone 16 Pro Max
+    ];
+    return [pillDevices containsObject:model];
+}
+    
+    /// 全面屏幕(凹口屏幕 + 药丸屏幕)
++ (BOOL)isFullScreen {
+    return [self isNotchScreen] || [self isPillScreen];
+}
+    
+    /// 传统屏幕(iPhoneX之前的直角屏)
++ (BOOL)isTraditionalScreen {
+    return ![self isFullScreen];
+}
+    
 @end

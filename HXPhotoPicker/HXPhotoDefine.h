@@ -11,6 +11,7 @@
 
 #import <CommonCrypto/CommonDigest.h>
 #import "NSBundle+HXPhotoPicker.h"
+#import "HXPhotoTools.h"
 
 /// 当前版本
 #define HXVersion @"3.3.2"
@@ -66,7 +67,7 @@
 
 #define HXShowLog NO
 
-#define HX_UI_IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define HX_UI_IS_IPAD (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad)
 
 #define HX_ALLOW_LOCATION ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] || [[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSLocationAlwaysUsageDescription"])
 
@@ -82,61 +83,18 @@
 
 #define HasSDWebImage (__has_include(<SDWebImage/UIImageView+WebCache.h>) || __has_include("UIImageView+WebCache.h"))
 
-#define HX_ScreenWidth [UIScreen mainScreen].bounds.size.width
-#define HX_ScreenHeight [UIScreen mainScreen].bounds.size.height
 
-#define HX_IS_IPHONEX (CGSizeEqualToSize([UIScreen mainScreen].bounds.size, CGSizeMake(375, 812)) || CGSizeEqualToSize([UIScreen mainScreen].bounds.size, CGSizeMake(812, 375)) || CGSizeEqualToSize([UIScreen mainScreen].bounds.size, CGSizeMake(414, 896)) || CGSizeEqualToSize([UIScreen mainScreen].bounds.size, CGSizeMake(896, 414)))
 
-// 判断iPhone X
-#define HX_Is_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+///iPhoneX
+#define HX_IS_IPhoneX_All       [HXPhotoTools isFullScreen]
 
-//判断iPHoneXr
-#define HX_Is_iPhoneXR ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(828, 1792), [[UIScreen mainScreen] currentMode].size) && !HX_UI_IS_IPAD : NO)
-
-//判断iPHoneXs
-#define HX_Is_iPhoneXS ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) && !HX_UI_IS_IPAD : NO)
-
-//判断iPhoneXs Max
-#define HX_Is_iPhoneXS_MAX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2688), [[UIScreen mainScreen] currentMode].size) && !HX_UI_IS_IPAD : NO)
-
-//判断iPHone12 mini
-#define HX_Is_iPhoneTwelveMini ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1080, 2340), [[UIScreen mainScreen] currentMode].size) && !HX_UI_IS_IPAD : NO)
-
-//判断iPHone12 和 iPHone12 Pro
-#define HX_Is_iPhoneTwelvePro ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1170, 2532), [[UIScreen mainScreen] currentMode].size) && !HX_UI_IS_IPAD : NO)
-
-//判断iPHone12 ProMax
-#define HX_Is_iPhoneTwelveProMax ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1284, 2778), [[UIScreen mainScreen] currentMode].size) && !HX_UI_IS_IPAD : NO)
-
-#define HX_Is_iPhone14ProMax ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1290, 2796), [[UIScreen mainScreen] currentMode].size) && !HX_UI_IS_IPAD : NO)
-
-#define HX_Is_iPhone14Pro ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1179, 2556), [[UIScreen mainScreen] currentMode].size) && !HX_UI_IS_IPAD : NO)
-
-#define HX_IS_IPhoneX_All (HX_Is_iPhoneX || HX_Is_iPhoneXR || HX_Is_iPhoneXS || HX_Is_iPhoneXS_MAX || HX_IS_IPHONEX || HX_Is_iPhoneTwelveMini || HX_Is_iPhoneTwelvePro || HX_Is_iPhoneTwelveProMax || HX_Is_iPhone14Pro || HX_Is_iPhone14ProMax)
-
+#define HX_ScreenWidth          [UIScreen mainScreen].bounds.size.width
+#define HX_ScreenHeight         [UIScreen mainScreen].bounds.size.height
 // 导航栏 + 状态栏 的高度
-#define hxNavigationBarHeight ((HX_UI_IS_IPAD ? 50 : 44) + HXStatusBarHeight)
-#define hxTopMargin (HX_IS_IPhoneX_All ? 44 : 0)
-#define hxBottomMargin (HX_IS_IPhoneX_All ? 34 : 0)
-#define HXStatusBarHeight [HXPhotoTools getStatusBarHeight]
-
-#define HX_IOS14_Later ([UIDevice currentDevice].systemVersion.floatValue >= 14.0f)
-
-#define HX_IOS13_Later ([UIDevice currentDevice].systemVersion.floatValue >= 13.0f)
-
-#define HX_IOS11_Later ([UIDevice currentDevice].systemVersion.floatValue >= 11.0f)
-
-#define HX_IOS11_Earlier  ([UIDevice currentDevice].systemVersion.floatValue < 11.0f)
-
-#define HX_IOS10_Later ([UIDevice currentDevice].systemVersion.floatValue >= 10.0f)
-
-#define HX_IOS91Later ([UIDevice currentDevice].systemVersion.floatValue >= 9.1f)
-
-#define HX_IOS9Later ([UIDevice currentDevice].systemVersion.floatValue >= 9.0f)
-
-#define HX_IOS82Later ([UIDevice currentDevice].systemVersion.floatValue >= 8.2f)
-
-#define HX_IOS9Earlier ([UIDevice currentDevice].systemVersion.floatValue < 9.0f)
+#define HXStatusBarHeight       [HXPhotoTools navStatusBarHeight]
+#define hxNavigationBarHeight   [HXPhotoTools navBarHeight]
+#define hxTopMargin             (HX_IS_IPhoneX_All ? 44 : 0)
+#define hxBottomMargin          (HX_IS_IPhoneX_All ? 34 : 0)
 
 // 弱引用
 #define HXWeakSelf __weak typeof(self) weakSelf = self;

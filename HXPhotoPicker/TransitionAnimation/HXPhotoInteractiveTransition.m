@@ -214,17 +214,12 @@
 #pragma clang diagnostic ignored"-Wdeprecated-declarations"
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 #pragma clang diagnostic pop
-        
-        if (HX_IOS11_Later) {
-            // 处理 ios11 当导航栏隐藏时手势返回的问题
-            [toVC.navigationController.navigationBar.layer removeAllAnimations];
-            // 找到动画异常的视图，然后移除layer动画 ！！！！！
-            // 一层一层的慢慢的找,把每个有动画的全部移除
-            [self removeAllAnimationsForView:toVC.navigationController.navigationBar];
-            [toVC.navigationController setNavigationBarHidden:NO animated:YES];
-        }else {
-            [toVC.navigationController setNavigationBarHidden:NO];
-        }
+        // 处理 ios11 当导航栏隐藏时手势返回的问题
+        [toVC.navigationController.navigationBar.layer removeAllAnimations];
+        // 找到动画异常的视图，然后移除layer动画 ！！！！！
+        // 一层一层的慢慢的找,把每个有动画的全部移除
+        [self removeAllAnimationsForView:toVC.navigationController.navigationBar];
+        [toVC.navigationController setNavigationBarHidden:NO animated:YES];
         toVC.navigationController.navigationBar.alpha = 0;
         toVC.bottomView.alpha = 0;
         toVC.limitView.alpha = 0;
@@ -317,10 +312,7 @@
             fromVC.collectionView.hidden = NO;
             if (!fromVC.bottomView.userInteractionEnabled) {
                 fromVC.view.backgroundColor = [UIColor blackColor];
-                if (HX_IOS11_Later) {
-                    // 处理 ios11 当导航栏隐藏时手势返回的问题
-                    [toVC.navigationController setNavigationBarHidden:YES];
-                }
+                [toVC.navigationController setNavigationBarHidden:YES];
             }else {
                 fromVC.view.backgroundColor = [HXPhotoCommon photoCommon].isDark ? [UIColor blackColor] : fromVC.manager.configuration.previewPhotoViewBgColor;
             }
@@ -376,7 +368,7 @@
     }completion:^(BOOL finished) {
 //        toVC.navigationController.navigationBar.userInteractionEnabled = YES;
         if (finished) {
-            if (!fromVC.bottomView.userInteractionEnabled && HX_IOS11_Later) {
+            if (!fromVC.bottomView.userInteractionEnabled) {
                 // 处理 ios11 当导航栏隐藏时手势返回的问题
                 [toVC.navigationController.navigationBar.layer removeAllAnimations];
                 [toVC.navigationController setNavigationBarHidden:NO];

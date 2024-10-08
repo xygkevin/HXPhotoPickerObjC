@@ -428,23 +428,7 @@ UITableViewDelegate
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         [_tableView registerClass:[HXAlbumListSingleViewCell class] forCellReuseIdentifier:@"tableViewCellId"];
-#ifdef __IPHONE_11_0
-        if (@available(iOS 11.0, *)) {
-//            if ([self hx_navigationBarWhetherSetupBackground]) {
-//                self.navigationController.navigationBar.translucent = NO;
-//            }else {
-                _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-//            }
-#else
-            if ((NO)) {
-#endif
-            } else {
-//                if ([self hx_navigationBarWhetherSetupBackground]) {
-//                    self.navigationController.navigationBar.translucent = NO;
-//                }else {
-                    self.automaticallyAdjustsScrollViewInsets = NO;
-//                }
-            }
+        _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }
     return _tableView;
 }
@@ -469,10 +453,8 @@ UITableViewDelegate
 }
 - (void)goSetup {
     NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-    if (@available(iOS 10.0, *)) {
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-    }else {
-        [[UIApplication sharedApplication] openURL:url];
     }
 }
 @end

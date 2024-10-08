@@ -86,13 +86,13 @@
     [super layoutSubviews];
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown || HX_UI_IS_IPAD) {
-        CGFloat sliderY = HX_IS_IPHONEX ? self.hx_h - hxBottomMargin - 50 : self.hx_h - 50;
+        CGFloat sliderY = HX_IS_IPhoneX_All ? self.hx_h - hxBottomMargin - 50 : self.hx_h - 50;
         if (self.didAddBottomPageControl) {
-            sliderY -= HX_IS_IPHONEX ? 10 : 30;
+            sliderY -= HX_IS_IPhoneX_All ? 10 : 30;
         }
         self.bottomSliderView.frame = CGRectMake(15, sliderY, self.hx_w - 30, 35);
     }else if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft){
-        CGFloat sliderY =  HX_IS_IPHONEX ? self.hx_h - 60 : self.hx_h - 50;
+        CGFloat sliderY =  HX_IS_IPhoneX_All ? self.hx_h - 60 : self.hx_h - 50;
         if (self.didAddBottomPageControl) {
             sliderY -=  30;
         }

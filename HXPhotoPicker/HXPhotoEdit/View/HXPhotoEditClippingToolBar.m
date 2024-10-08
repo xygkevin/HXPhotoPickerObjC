@@ -294,16 +294,11 @@
     self.scaleView.center = CGPointMake(self.model.scaleSize.width / 2, self.model.scaleSize.height / 2);
     self.scaleLb.frame = CGRectMake(1.5, 1.5, self.scaleView.hx_w - 3, self.scaleView.hx_h - 3);
     self.scaleImageView.frame = self.scaleView.bounds;
-    if (HX_IOS11_Earlier) {
-        [self.scaleView hx_radiusWithRadius:2 corner:UIRectCornerAllCorners];
-    }
 }
 - (UIView *)scaleView {
     if (!_scaleView) {
         _scaleView = [[UIView alloc] init];
-        if (HX_IOS11_Later) {
-            [_scaleView hx_radiusWithRadius:2 corner:UIRectCornerAllCorners];
-        }
+        [_scaleView hx_radiusWithRadius:2 corner:UIRectCornerAllCorners];
         [_scaleView addSubview:self.scaleImageView];
         [_scaleView addSubview:self.scaleLb];
     }

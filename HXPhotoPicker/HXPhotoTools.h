@@ -88,10 +88,6 @@
 /// 将大小转换成字符串 xxM / xxkb
 + (NSString * _Nullable)getBytesFromDataLength:(NSUInteger)dataLength;
 
-+ (BOOL)platform;
-+ (BOOL)isIphone6;
-+ (BOOL)isIphone12Mini;
-
 /// 判断RTL语言
 + (BOOL)isRTLLanguage;
 
@@ -150,5 +146,21 @@
 /// 删除下载的网络视频缓存文件
 + (void)deleteNetWorkVideoFile;
 
-+ (CGFloat)getStatusBarHeight;
+/// 获取顶部状态栏高度
++ (CGFloat)navStatusBarHeight;
+/// 获取顶部导航栏高度
++ (CGFloat)navBarHeight;
+
+/// 凹口屏幕
++ (BOOL)isNotchScreen;
+
+/// 药丸屏幕
++ (BOOL)isPillScreen;
+
+/// 全面屏幕(凹口屏幕 + 药丸屏幕)
++ (BOOL)isFullScreen;
+
+/// 传统屏幕(iPhoneX之前的直角屏)
++ (BOOL)isTraditionalScreen;
+
 @end

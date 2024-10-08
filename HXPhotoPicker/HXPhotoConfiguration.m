@@ -100,14 +100,10 @@
     }else {
         _clarityScale = 1.5;
     }
-    if ([UIScreen mainScreen].bounds.size.width == 320) {
+    if ([UIScreen mainScreen].bounds.size.width <= 375.0) {
         self.rowCount = 3;
     }else {
-        if ([HXPhotoTools isIphone6]) {
-            self.rowCount = 3;
-        }else {
-            self.rowCount = 4;
-        }
+        self.rowCount = 4;
     }
     self.allowSlidingSelection = YES;
     self.livePhotoAutoPlay = YES;

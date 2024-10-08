@@ -808,11 +808,7 @@
     self.brushLineWidthPromptView.hx_size = CGSizeMake(width, width);
     self.brushLineWidthPromptView.layer.shadowRadius = width / 2.f;
     self.brushLineWidthPromptView.center = CGPointMake(self.view.hx_w / 2, self.view.hx_h / 2);
-    if (HX_IOS11_Later) {
-        [self.brushLineWidthPromptView hx_radiusWithRadius:width / 2.f corner:UIRectCornerAllCorners];
-    }else {
-        self.brushLineWidthPromptView.layer.cornerRadius = width / 2.f;
-    }
+    [self.brushLineWidthPromptView hx_radiusWithRadius:width / 2.f corner:UIRectCornerAllCorners];
 }
 - (HXPhotoEditGraffitiColorView *)graffitiColorView {
     if (!_graffitiColorView) {

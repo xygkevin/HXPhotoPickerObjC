@@ -117,11 +117,6 @@ HX_PhotoEditViewControllerDelegate
     return self;
 }
 - (void)dealloc {
-    if (self.photoViewController && HX_IOS9Earlier) {
-        // 处理ios8 导航栏转场动画崩溃问题
-        self.photoViewController.navigationController.delegate = nil;
-        self.photoViewController = nil;
-    }
     if (_collectionView) {
         HXPhotoPreviewViewCell *cell = (HXPhotoPreviewViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentModelIndex inSection:0]];
         [cell cancelRequest];
@@ -587,8 +582,7 @@ HX_PhotoEditViewControllerDelegate
             if ([self.manager.afterSelectedArray containsObject:model]) {
                 self.bottomPageControl.currentPage = [[self.manager afterSelectedArray] indexOfObject:model];
             }
-            BOOL canAddBottomPageControl =  HX_IOS14_Later ? YES : (self.manager.afterSelectedCount <= 15);
-            if (canAddBottomPageControl && self.showBottomPageControl) {
+            if (self.showBottomPageControl) {
                 [self.view addSubview:self.bottomPageControl];
                 self.didAddBottomPageControl = YES;
             }
@@ -1557,11 +1551,7 @@ HX_PhotoEditViewControllerDelegate
     if (!_titleLb) {
         _titleLb = [[UILabel alloc] init];
         _titleLb.textAlignment = NSTextAlignmentCenter;
-        if (HX_IOS82Later) {
-            _titleLb.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
-        }else {
-            _titleLb.font = [UIFont systemFontOfSize:14];
-        }
+        _titleLb.font = [UIFont systemFontOfSize:14 weight:UIFontWeightMedium];
     }
     return _titleLb;
 }
@@ -1569,11 +1559,7 @@ HX_PhotoEditViewControllerDelegate
     if (!_subTitleLb) {
         _subTitleLb = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.titleLb.frame) + 4, 150, 12)];
         _subTitleLb.textAlignment = NSTextAlignmentCenter;
-        if (HX_IOS82Later) {
-            _subTitleLb.font = [UIFont systemFontOfSize:11 weight:UIFontWeightRegular];
-        }else {
-            _subTitleLb.font = [UIFont systemFontOfSize:11];
-        }
+        _subTitleLb.font = [UIFont systemFontOfSize:11 weight:UIFontWeightRegular];
     }
     return _subTitleLb;
 }
@@ -1614,37 +1600,16 @@ HX_PhotoEditViewControllerDelegate
         [_collectionView registerClass:[HXPhotoPreviewImageViewCell class] forCellWithReuseIdentifier:@"HXPhotoPreviewImageViewCell"];
         [_collectionView registerClass:[HXPhotoPreviewLivePhotoCell class] forCellWithReuseIdentifier:@"HXPhotoPreviewLivePhotoCell"];
         [_collectionView registerClass:[HXPhotoPreviewVideoViewCell class] forCellWithReuseIdentifier:@"HXPhotoPreviewVideoViewCell"];
-#ifdef __IPHONE_11_0
-        if (@available(iOS 11.0, *)) {
-            _collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-#else
-            if ((NO)) {
-#endif
-        } else {
-            self.automaticallyAdjustsScrollViewInsets = NO;
-        }
+        _collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }
     return _collectionView;
 }
 - (UICollectionViewFlowLayout *)flowLayout {
     if (!_flowLayout) {
-    _flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    _flowLayout.minimumInteritemSpacing = 0;
-    _flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-
-    if (self.outside) {
+        _flowLayout = [[UICollectionViewFlowLayout alloc] init];
+        _flowLayout.minimumInteritemSpacing = 0;
+        _flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         _flowLayout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
-    }else {
-#ifdef __IPHONE_11_0
-        if (@available(iOS 11.0, *)) {
-#else
-            if ((NO)) {
-#endif
-                _flowLayout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
-            }else {
-                _flowLayout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10);
-            }
-        }
     }
     return _flowLayout;
 }

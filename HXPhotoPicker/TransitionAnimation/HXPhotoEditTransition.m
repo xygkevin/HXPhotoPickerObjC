@@ -248,17 +248,15 @@
         if ([(HXPhotoPreviewViewController *)toVC bottomView].alpha == 0) {
             [(HXPhotoPreviewViewController *)toVC setSubviewAlphaAnimate:YES duration:0.15f];
             toVC.navigationController.navigationBar.alpha = 0;
-            if (HX_IOS11_Later) {
-                [toVC.navigationController.navigationBar.layer removeAllAnimations];
-                if (toVC.navigationController.navigationBar.subviews.count > 2) {
-                    UIView *navBarView = toVC.navigationController.navigationBar.subviews[2];
-                    for (UIView *navBarViewSubView in navBarView.subviews) {
-                        [navBarViewSubView.layer removeAllAnimations];
-                        for (UIView *subView in navBarViewSubView.subviews) {
-                            [subView.layer removeAllAnimations];
-                            for (UIView *ssubView in subView.subviews) {
-                                [ssubView.layer removeAllAnimations];
-                            }
+            [toVC.navigationController.navigationBar.layer removeAllAnimations];
+            if (toVC.navigationController.navigationBar.subviews.count > 2) {
+                UIView *navBarView = toVC.navigationController.navigationBar.subviews[2];
+                for (UIView *navBarViewSubView in navBarView.subviews) {
+                    [navBarViewSubView.layer removeAllAnimations];
+                    for (UIView *subView in navBarViewSubView.subviews) {
+                        [subView.layer removeAllAnimations];
+                        for (UIView *ssubView in subView.subviews) {
+                            [ssubView.layer removeAllAnimations];
                         }
                     }
                 }

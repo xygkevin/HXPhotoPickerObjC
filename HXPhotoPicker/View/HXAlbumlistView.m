@@ -430,12 +430,10 @@
         self.manager = manager;
         [self addSubview:self.contentView];
         [self addSubview:self.button];
-        if (HX_IOS11_Later) {
-            if (self.manager.configuration.type == HXConfigurationTypeWXChat ||
-                self.manager.configuration.type == HXConfigurationTypeWXMoment) {
-                self.contentView.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.3];
-                [self.contentView hx_radiusWithRadius:15 corner:UIRectCornerAllCorners];
-            }
+        if (self.manager.configuration.type == HXConfigurationTypeWXChat ||
+            self.manager.configuration.type == HXConfigurationTypeWXMoment) {
+            self.contentView.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.3];
+            [self.contentView hx_radiusWithRadius:15 corner:UIRectCornerAllCorners];
         }
         [self changeColor];
         self.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width - 120, 30);
@@ -538,13 +536,6 @@
     [super layoutSubviews];
     self.button.frame = self.bounds;
     [self setupContentViewFrame];
-    if (HX_IOS11_Earlier) {
-        if (self.manager.configuration.type == HXConfigurationTypeWXChat ||
-            self.manager.configuration.type == HXConfigurationTypeWXMoment) {
-            self.contentView.backgroundColor = [[UIColor grayColor] colorWithAlphaComponent:0.3];
-            [self.contentView hx_radiusWithRadius:15 corner:UIRectCornerAllCorners];
-        }
-    }
 }
 - (UIView *)contentView {
     if (!_contentView) {

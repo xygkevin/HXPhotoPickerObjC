@@ -243,11 +243,7 @@ CLLocationManagerDelegate
     if (_previewImageView) {
         [UIView animateWithDuration:0.25 animations:^{
             self.previewImageView.alpha = 0;
-            if (HX_IOS9Later) {
-                [self.effectView setEffect:nil];
-            }else {
-                self.effectView.alpha = 0;
-            }
+            [self.effectView setEffect:nil];
         } completion:^(BOOL finished) {
             [self.effectView removeFromSuperview];
             [self.previewImageView removeFromSuperview];
@@ -286,12 +282,10 @@ CLLocationManagerDelegate
                     [weakSelf.view hx_showImageHUDText:[NSBundle hx_localizedStringForKey:@"麦克风添加失败，录制视频会没有声音哦!"]];
                 }, ^{
                     NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-                    if (@available(iOS 10.0, *)) {
+                    if ([[UIApplication sharedApplication] canOpenURL:url]) {
                         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-                    }else {
-                        [[UIApplication sharedApplication] openURL:url];
                     }
-                }); 
+                });
             }
         });
     }];
@@ -301,13 +295,10 @@ CLLocationManagerDelegate
 }
 - (void)changeSubviewFrame {
     self.customNavigationBar.frame = CGRectMake(0, self.previewView.hx_y, self.view.hx_w, hxNavigationBarHeight);
-    if (!HX_IS_IPhoneX_All && HX_IOS11_Later) {
+    if (!HX_IS_IPhoneX_All) {
         self.customNavigationBar.hx_y = self.previewView.hx_y + 10;
         self.topView.frame = self.customNavigationBar.frame;
         self.topView.hx_y = -10;
-    }else if (HX_IS_IPhoneX_All) {
-        self.customNavigationBar.hx_y = self.previewView.hx_y - 40;
-        self.topView.frame = self.customNavigationBar.frame;
     }
     self.topMaskLayer.frame = self.topView.bounds;
     if (HX_IS_IPhoneX_All) {

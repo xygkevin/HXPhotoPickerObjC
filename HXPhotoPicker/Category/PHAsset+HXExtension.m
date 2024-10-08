@@ -14,15 +14,7 @@
 
 - (void)hx_checkForModificationsWithAssetPathMethodCompletion:(void (^)(BOOL))completion {
     [self requestContentEditingInputWithOptions:nil completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
-        AVAsset *avAsset;
-        if HX_IOS9Later {
-            avAsset = contentEditingInput.audiovisualAsset;
-        }else {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored"-Wdeprecated-declarations"
-            avAsset = contentEditingInput.avAsset;
-#pragma clang diagnostic pop
-        }
+        AVAsset *avAsset = contentEditingInput.audiovisualAsset;
         NSString *path = avAsset ? [avAsset description] : contentEditingInput.fullSizeImageURL.path;
         completion([path containsString:@"/Mutations/"]);
     }];

@@ -1386,9 +1386,7 @@ HX_PhotoEditViewControllerDelegate
         }
         if (!self.manager.configuration.singleSelected) {
             HXPhotoPreviewViewController *previewVC = [[HXPhotoPreviewViewController alloc] init];
-            if (HX_IOS9Earlier) {
-                previewVC.photoViewController = self;
-            }
+            previewVC.photoViewController = self;
             NSInteger currentIndex = [self.previewArray indexOfObject:cell.model];
             previewVC.delegate = self;
             previewVC.modelArray = self.previewArray;
@@ -1400,9 +1398,7 @@ HX_PhotoEditViewControllerDelegate
             if (!self.manager.configuration.singleJumpEdit) {
                 NSInteger currentIndex = [self.previewArray indexOfObject:cell.model];
                 HXPhotoPreviewViewController *previewVC = [[HXPhotoPreviewViewController alloc] init];
-                if (HX_IOS9Earlier) {
-                    previewVC.photoViewController = self;
-                }
+                previewVC.photoViewController = self;
                 previewVC.delegate = self;
                 previewVC.modelArray = self.previewArray;
                 previewVC.manager = self.manager;
@@ -1434,9 +1430,7 @@ HX_PhotoEditViewControllerDelegate
                 }else {
                     NSInteger currentIndex = [self.previewArray indexOfObject:cell.model];
                     HXPhotoPreviewViewController *previewVC = [[HXPhotoPreviewViewController alloc] init];
-                    if (HX_IOS9Earlier) {
-                        previewVC.photoViewController = self;
-                    }
+                    previewVC.photoViewController = self;
                     previewVC.delegate = self;
                     previewVC.modelArray = self.previewArray;
                     previewVC.manager = self.manager;
@@ -1542,9 +1536,7 @@ HX_PhotoEditViewControllerDelegate
     HXPhotoViewCell *cell = (HXPhotoViewCell *)[self.collectionView cellForItemAtIndexPath:vc.indexPath];
     if (!self.manager.configuration.singleSelected) {
         HXPhotoPreviewViewController *previewVC = [[HXPhotoPreviewViewController alloc] init];
-        if (HX_IOS9Earlier) {
-            previewVC.photoViewController = self;
-        }
+        previewVC.photoViewController = self;
         previewVC.delegate = self;
         previewVC.modelArray = self.previewArray;
         previewVC.manager = self.manager;
@@ -1562,9 +1554,7 @@ HX_PhotoEditViewControllerDelegate
     }else {
         if (!self.manager.configuration.singleJumpEdit) {
             HXPhotoPreviewViewController *previewVC = [[HXPhotoPreviewViewController alloc] init];
-            if (HX_IOS9Earlier) {
-                previewVC.photoViewController = self;
-            }
+            previewVC.photoViewController = self;
             previewVC.delegate = self;
             previewVC.modelArray = self.previewArray;
             previewVC.manager = self.manager;
@@ -1600,9 +1590,7 @@ HX_PhotoEditViewControllerDelegate
                 }
             }else {
                 HXPhotoPreviewViewController *previewVC = [[HXPhotoPreviewViewController alloc] init];
-                if (HX_IOS9Earlier) {
-                    previewVC.photoViewController = self;
-                }
+                previewVC.photoViewController = self;
                 previewVC.delegate = self;
                 previewVC.modelArray = self.previewArray;
                 previewVC.manager = self.manager;
@@ -1833,9 +1821,7 @@ HX_PhotoEditViewControllerDelegate
         return;
     }
     HXPhotoPreviewViewController *previewVC = [[HXPhotoPreviewViewController alloc] init];
-    if (HX_IOS9Earlier) {
-        previewVC.photoViewController = self;
-    }
+    previewVC.photoViewController = self;
     previewVC.delegate = self;
     previewVC.modelArray = [NSMutableArray arrayWithArray:[self.manager selectedArray]];
     previewVC.manager = self.manager;
@@ -2381,11 +2367,7 @@ HX_PhotoEditViewControllerDelegate
                         if (weakSelf.cameraSelected) {
                             [UIView animateWithDuration:0.25 animations:^{
                                 weakSelf.tempCameraView.alpha = 0;
-                                if (HX_IOS9Later) {
-                                    [weakSelf.effectView setEffect:nil];
-                                }else {
-                                    weakSelf.effectView.alpha = 0;
-                                }
+                                [weakSelf.effectView setEffect:nil];
                             } completion:^(BOOL finished) {
                                 [weakSelf.tempCameraView removeFromSuperview];
                                 [weakSelf.effectView removeFromSuperview];

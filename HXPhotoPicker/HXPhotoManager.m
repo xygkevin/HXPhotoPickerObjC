@@ -112,10 +112,7 @@
     self.endSelectedCameraPhotos = [NSMutableArray array];
     self.endSelectedCameraVideos = [NSMutableArray array]; 
     self.iCloudUploadArray = [NSMutableArray array];
-    
-    if (HX_IOS91Later) {
-        self.supportLivePhoto = YES;
-    }
+    self.supportLivePhoto = YES;
     
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
