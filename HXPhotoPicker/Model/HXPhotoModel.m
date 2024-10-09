@@ -502,7 +502,7 @@
         NSThread *thread = [NSThread currentThread];
         UIInterfaceOrientation orientation = UIInterfaceOrientationPortrait;
         if (thread.isMainThread) {
-            orientation = [[UIApplication sharedApplication] statusBarOrientation];
+            orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
         }
         if ((orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) && !HX_UI_IS_IPAD) {
             w = height / self.imageSize.height * imgWidth;

@@ -9,6 +9,7 @@
 #import "HXMECancelBlock.h"
 #import <ImageIO/ImageIO.h>
 #import <MobileCoreServices/UTCoreTypes.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
  hx_me_dispatch_cancelable_block_t hx_dispatch_block_t(NSTimeInterval delay, void(^block)(void))
  {
@@ -56,11 +57,11 @@ CGRect HXMediaEditProundRect(CGRect rect)
 
 
 __attribute__((overloadable)) NSData * HX_UIImagePNGRepresentation(UIImage *image) {
-    return HX_UIImageRepresentation(image, kUTTypePNG, nil);
+    return HX_UIImageRepresentation(image, (__bridge CFStringRef)UTTypeJPEG.identifier, nil);
 }
 
 __attribute__((overloadable)) NSData * HX_UIImageJPEGRepresentation(UIImage *image) {
-    return HX_UIImageRepresentation(image, kUTTypeJPEG, nil);
+    return HX_UIImageRepresentation(image, (__bridge CFStringRef)UTTypeJPEG.identifier, nil);
 }
 
 __attribute__((overloadable)) NSData * HX_UIImageRepresentation(UIImage *image, CFStringRef __nonnull type, NSError * __autoreleasing *error) {

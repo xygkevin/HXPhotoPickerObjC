@@ -19,7 +19,7 @@
 
 #define HXEditTextBlankWidth 22
 #define HXEditTextRadius 8.f
-#define HXEditTextBottomViewMargin ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait || [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown) ? hxBottomMargin : 10
+#define HXEditTextBottomViewMargin ([HXPhotoTools keyWindowScene].interfaceOrientation == UIInterfaceOrientationPortrait || [HXPhotoTools keyWindowScene].interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) ? hxBottomMargin : 10
 
 @interface HXPhotoEditTextView ()<UITextViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, NSLayoutManagerDelegate>
 @property (nonatomic, strong) NSMutableArray *rectArray;
@@ -75,7 +75,7 @@
     view.completion = completion;
     view.frame = [UIScreen mainScreen].bounds;
     view.hx_y = view.hx_h;
-    [[UIApplication sharedApplication].keyWindow addSubview:view];
+    [[HXPhotoTools keyWindow] addSubview:view];
     [view show];
     return view;
 }
@@ -94,7 +94,7 @@
     self.textBtn.layer.cornerRadius = 1.f;
     [self.textBtn setImage:[UIImage hx_imageContentsOfFile:@"hx_photo_edit_text_ normal"] forState:UIControlStateNormal];
     [self.textBtn setImage:[UIImage hx_imageContentsOfFile:@"hx_photo_edit_text_selected"] forState:UIControlStateSelected];
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) {
         self.topViewHeightConstraint.constant = 50;
         self.topLeftConstraint.constant = hxTopMargin;

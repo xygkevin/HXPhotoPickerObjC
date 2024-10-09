@@ -322,8 +322,9 @@
     }]; 
 }
 - (void)pausePlayerAndShowNaviBar {
-    [self.player.currentItem seekToTime:CMTimeMake(0, 1)];
-    [self.player play];
+    [self.player.currentItem seekToTime:CMTimeMake(0, 1) completionHandler:^(BOOL finished) {
+        [self.player play];
+    }];
 }
 - (void)playVideo {
     self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
@@ -383,7 +384,7 @@
 }
 - (UIActivityIndicatorView *)loadingView {
     if (!_loadingView) {
-        _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
     }
     return _loadingView;
 }

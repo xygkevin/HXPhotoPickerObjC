@@ -182,14 +182,15 @@
     self.stopCancel = NO;
 }
 - (void)pausePlayerAndShowNaviBar {
-    [self.player.currentItem seekToTime:CMTimeMake(0, 1)];
-    if ([HXPhotoCommon photoCommon].videoAutoPlayType == HXVideoAutoPlayTypeOnce) {
-        self.isPlayer = NO;
-        self.playBtn.hidden = NO;
-        return;
-    }
-    [self.player play];
-    self.isPlayer = YES;
+    [self.player.currentItem seekToTime:CMTimeMake(0, 1) completionHandler:^(BOOL finished) {
+        if ([HXPhotoCommon photoCommon].videoAutoPlayType == HXVideoAutoPlayTypeOnce) {
+            self.isPlayer = NO;
+            self.playBtn.hidden = NO;
+            return;
+        }
+        [self.player play];
+        self.isPlayer = YES;
+    }];
 }
 - (void)addPlayerObservers {
     self.canRemovePlayerObservers = YES;

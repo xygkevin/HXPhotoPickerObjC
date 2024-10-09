@@ -17,7 +17,7 @@
 #import "HXPhotoEditConfiguration.h"
 #import "NSBundle+HXPhotoPicker.h"
 
-#define HXclViewHeight HX_UI_IS_IPAD ? 500 : (([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait || [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown) ? (HX_IS_IPhoneX_All ? 400 : 350) : 200)
+#define HXclViewHeight HX_UI_IS_IPAD ? 500 : (([HXPhotoTools keyWindowScene].interfaceOrientation == UIInterfaceOrientationPortrait || [HXPhotoTools keyWindowScene].interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) ? (HX_IS_IPhoneX_All ? 400 : 350) : 200)
 
 
 @interface HXPhotoEditChartletListView ()<UICollectionViewDataSource, UICollectionViewDelegate>
@@ -50,7 +50,7 @@
     view.selectImageCompletion = completion;
     view.configuration = configuration;
     view.frame = [UIScreen mainScreen].bounds;
-    [[UIApplication sharedApplication].keyWindow addSubview:view];
+    [[HXPhotoTools keyWindow] addSubview:view];
     [view show];
 }
 
@@ -60,7 +60,7 @@
     view.selectImageCompletion = completion;
     view.models = models;
     view.frame = [UIScreen mainScreen].bounds;
-    [[UIApplication sharedApplication].keyWindow addSubview:view];
+    [[HXPhotoTools keyWindow] addSubview:view];
     [view show];
 }
 
@@ -88,7 +88,7 @@
     self.contentView.layer.masksToBounds = YES;
     [self.contentView hx_radiusWithRadius:8 corner:UIRectCornerTopLeft | UIRectCornerTopRight];
     
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) {
         self.arrowRightConstraint.constant = hxTopMargin;
         self.titleFlowLayout.sectionInset = UIEdgeInsetsMake(12.5, 20 + hxTopMargin, 12.5, 20);
@@ -447,7 +447,7 @@
 }
 - (UIActivityIndicatorView *)loadingView {
     if (!_loadingView) {
-        _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
         _loadingView.hidesWhenStopped = YES;
     }
     return _loadingView;

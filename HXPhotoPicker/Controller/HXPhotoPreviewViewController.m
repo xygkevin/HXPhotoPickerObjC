@@ -121,7 +121,7 @@ HX_PhotoEditViewControllerDelegate
         HXPhotoPreviewViewCell *cell = (HXPhotoPreviewViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.currentModelIndex inSection:0]];
         [cell cancelRequest];
     }
-    if ([UIApplication sharedApplication].statusBarHidden) {
+    if ([HXPhotoTools keyWindowScene].statusBarManager.statusBarHidden) {
         [self changeStatusBarWithHidden:NO];
         [self.navigationController setNavigationBarHidden:NO animated:NO];
 #pragma clang diagnostic push
@@ -237,7 +237,7 @@ HX_PhotoEditViewControllerDelegate
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     if (self.exteriorPreviewStyle == HXPhotoViewPreViewShowStyleDark) {
-        if ([UIApplication sharedApplication].statusBarHidden) {
+        if ([HXPhotoTools keyWindowScene].statusBarManager.statusBarHidden) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored"-Wdeprecated-declarations"
             [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
@@ -307,7 +307,7 @@ HX_PhotoEditViewControllerDelegate
     self.beforeOrientationIndex = self.currentModelIndex;
 }
 - (void)changeSubviewFrame {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     HXPhotoModel *model = self.modelArray[self.currentModelIndex];
     if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown || HX_UI_IS_IPAD) {
 #pragma clang diagnostic push
@@ -984,7 +984,7 @@ HX_PhotoEditViewControllerDelegate
             self.bottomView.hideEditBtn = !self.manager.configuration.photoCanEdit;
             self.bottomView.enabled = self.manager.configuration.photoCanEdit;
         }
-        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
         if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown || HX_UI_IS_IPAD) {
             self.titleLb.text = model.barTitle;
             self.subTitleLb.text = model.barSubTitle;

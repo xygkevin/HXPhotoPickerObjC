@@ -68,7 +68,7 @@
 - (void)photoListAddClick {
 #ifdef __IPHONE_14_0
     if (@available(iOS 14, *)) {
-        [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:[UIApplication sharedApplication].keyWindow.rootViewController.navigationController];
+        [[PHPhotoLibrary sharedPhotoLibrary] presentLimitedLibraryPickerFromViewController:[HXPhotoTools keyWindow].rootViewController.navigationController];
     }
 #endif
 }
@@ -92,6 +92,7 @@
         _photoManager.configuration.localFileName = @"hx_WxMomentPhotoModels";
         _photoManager.configuration.showOriginalBytes = YES;
         _photoManager.configuration.showOriginalBytesLoading = YES;
+        _photoManager.configuration.languageType = HXPhotoLanguageTypeEn;
 //        _photoManager.configuration.clarityScale = 2.f;
         HXWeakSelf
         _photoManager.viewWillAppear = ^(UIViewController *viewController) {

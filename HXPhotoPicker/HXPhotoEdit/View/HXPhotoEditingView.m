@@ -186,7 +186,7 @@ NSString *const kHXEditingViewData_clippingView = @"kHXEditingViewData_clippingV
     CGFloat left = HXClipZoom_margin;
     CGFloat bottom = self.editToolbarDefaultHeight + hxBottomMargin + 20;
     CGFloat right = HXClipZoom_margin;
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft) {
         top = HXClipZoom_margin + 15;
         left = HXClipZoom_margin + hxTopMargin;

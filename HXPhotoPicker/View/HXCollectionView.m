@@ -9,6 +9,7 @@
 #import "HXCollectionView.h"
 #import "HXPhotoSubViewCell.h"
 #import "HXPhotoModel.h"
+#import "HXPhotoTools.h"
 @interface HXCollectionView ()
 @property (weak, nonatomic) UILongPressGestureRecognizer *longPgr;
 @property (strong, nonatomic) NSIndexPath *originalIndexPath;
@@ -38,7 +39,7 @@
 }
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
-    [[UIApplication sharedApplication].keyWindow endEditing:YES];
+    [[HXPhotoTools keyWindow] endEditing:YES];
 }
 - (void)addGesture
 {

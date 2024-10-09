@@ -110,7 +110,7 @@
 #pragma clang diagnostic pop
 }
 - (CGRect)getImageFrame {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     CGFloat bottomMargin = hxBottomMargin;
     CGFloat leftRightMargin = 40;
     CGFloat imageY = HX_IS_IPhoneX_All ? 60 : 30;
@@ -144,7 +144,7 @@
     return CGRectMake((width - w) / 2 + leftRightMargin / 2, imageY + (height - h) / 2, w, h);
 }
 - (void)changeSubviewFrame:(BOOL)animated {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     CGFloat bottomMargin = hxBottomMargin;
     if (HX_IS_IPhoneX_All && (orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight)) {
         bottomMargin = 21;

@@ -477,9 +477,12 @@
     if (textWidth > maxWidth) {
         textWidth = maxWidth;
     }
-    [UIView animateWithDuration:0.25 animations:^{
+    
+    [UIView animateWithDuration:0.15 animations:^{
         self.titleLb.hx_w = textWidth;
         [self setTitleFrame];
+    } completion:^(BOOL finished) {
+        [self setupContentViewFrame]; /// 这里重新设置下,防止偶尔打开后不居中的问题
     }];
 }
 - (CGFloat)getTextWidth:(CGFloat)margin {
@@ -491,42 +494,37 @@
     return maxWidth;
 }
 - (void)setSubViewFrame {
-    CGFloat width = self.titleLb.hx_w + 5 + self.arrowIcon.hx_w + 10 + (30 - self.arrowIcon.hx_h) / 2;
+    CGFloat width = (self.titleLb.hx_w + 5 + self.arrowIcon.hx_w + 10 + (30 - self.arrowIcon.hx_h) / 2.0);
     self.titleLb.hx_x = 10;
-    self.arrowIcon.hx_x = CGRectGetMaxX(self.titleLb.frame) + 5;
+    self.arrowIcon.hx_x = CGRectGetMaxX(self.titleLb.frame) + 5.0;
     self.contentView.hx_w = width;
-    self.contentView.hx_centerX = self.hx_w / 2;
+    self.contentView.hx_centerX = self.hx_w / 2.0;
 }
 - (void)setTitleFrame {
     [self setSubViewFrame];
-    if (self.superview) {
-        if ([self.superview isKindOfClass:NSClassFromString(@"_UITAMICAdaptorView")]) {
-            [self setupContentViewFrame];
-        }
-    }
+    [self setupContentViewFrame];
 }
 - (BOOL)selected {
     return self.button.selected;
 }
+    
 - (void)setupContentViewFrame {
-    BOOL canSet = self.superview && [self.superview isKindOfClass:NSClassFromString(@"_UITAMICAdaptorView")];
-    if (canSet) {
-        // 让按钮在屏幕中间
+    if (self.superview && [self.superview isKindOfClass:NSClassFromString(@"_UITAMICAdaptorView")]) {
         CGFloat superViewX = self.superview.hx_x;
         if (superViewX == 0) {
             superViewX = self.superview.superview.hx_x;
         }
         CGFloat temp_x = superViewX + self.contentView.hx_x;
-        CGFloat windowWidth = [UIApplication sharedApplication].keyWindow.hx_w;
-        CGFloat w_x = (windowWidth - self.contentView.hx_w) / 2;
+        CGFloat windowWidth = [HXPhotoTools keyWindow].hx_w;
+        CGFloat w_x = (windowWidth - self.contentView.hx_w) / 2.0;
         if (temp_x > w_x) {
             CGFloat contentX = w_x - superViewX;
             if (contentX >= 0) {
                 self.contentView.hx_x = contentX;
-            }else {
+            } else {
                 self.contentView.hx_x = 0;
             }
-        }else {
+        } else {
             CGFloat difference = w_x - temp_x;
             self.contentView.hx_x += difference;
         }

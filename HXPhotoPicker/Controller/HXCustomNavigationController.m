@@ -356,7 +356,7 @@
     imageView.alpha = 0;
     imageView.userInteractionEnabled = NO;
     imageView.frame = [UIScreen mainScreen].bounds;
-    [[UIApplication sharedApplication].keyWindow addSubview:imageView];
+    [[HXPhotoTools keyWindow] addSubview:imageView];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [imageView removeFromSuperview];
     });

@@ -103,7 +103,7 @@
     }
     if (longGesture.state == UIGestureRecognizerStateBegan) {
         [self.playView clear];
-        CGPoint point = [longGesture locationInView:[UIApplication sharedApplication].keyWindow];
+        CGPoint point = [longGesture locationInView:[HXPhotoTools keyWindow]];
         self.firstLongGestureLocation = point;
         self.inTranscribe = YES;
         self.isAnimation = YES;
@@ -123,7 +123,7 @@
         if (self.isAnimation) {
             return;
         }
-        CGPoint point = [longGesture locationInView:[UIApplication sharedApplication].keyWindow];
+        CGPoint point = [longGesture locationInView:[HXPhotoTools keyWindow]];
         CGFloat margin = self.firstLongGestureLocation.y - point.y;
         if (margin < 0) {
             margin = 0;

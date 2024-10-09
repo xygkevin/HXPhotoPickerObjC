@@ -446,14 +446,10 @@
 }
 - (UIActivityIndicatorView *)loading {
     if (!_loading) {
-        _loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
 #ifdef __IPHONE_13_0
         if ([HXPhotoCommon photoCommon].isDark) {
-            if (@available(iOS 13.0, *)) {
-                _loading.activityIndicatorViewStyle = UIActivityIndicatorViewStyleLarge;
-            } else {
-                _loading.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-            }
+            _loading.activityIndicatorViewStyle = UIActivityIndicatorViewStyleLarge;
             _loading.color = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1];
         }
 #endif

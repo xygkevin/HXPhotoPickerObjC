@@ -308,7 +308,7 @@
         if (isMoveCenter && !isDelete) {
             /** 超出边界线 重置会中间 */
             [UIView animateWithDuration:0.25f animations:^{
-                self.center = [self.superview convertPoint:[UIApplication sharedApplication].keyWindow.center fromView:(UIView *)[UIApplication sharedApplication].keyWindow];
+                self.center = [self.superview convertPoint:[HXPhotoTools keyWindow].center fromView:(UIView *)[HXPhotoTools keyWindow]];
             }];
         }
     }

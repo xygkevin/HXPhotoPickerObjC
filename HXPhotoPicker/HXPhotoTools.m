@@ -1081,4 +1081,12 @@ NSString *const hx_kKeyContentIdentifier = @"com.apple.quicktime.content.identif
     return ![self isFullScreen];
 }
     
++ (UIWindowScene * _Nullable)keyWindowScene {
+    return (UIWindowScene *)[UIApplication sharedApplication].connectedScenes.anyObject;
+}
+    
++ (UIWindow * _Nullable)keyWindow {
+    return [self keyWindowScene].keyWindow;
+}
+    
 @end

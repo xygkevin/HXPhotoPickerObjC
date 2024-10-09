@@ -89,7 +89,6 @@ static const CGFloat kPhotoViewMargin = 12.0;
     return;
 #endif
     //    self.navigationController.navigationBar.translucent = NO;
-    self.automaticallyAdjustsScrollViewInsets = YES;
     
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     scrollView.alwaysBounceVertical = YES;

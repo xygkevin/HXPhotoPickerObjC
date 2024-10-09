@@ -193,7 +193,6 @@
         }
     };
     vc.previewActionItemsBlock = ^NSArray<id<UIPreviewActionItem>> *{
-        
         UIPreviewAction *action1 = [UIPreviewAction actionWithTitle:@"赞" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
             [weakSelf.view hx_showImageHUDText:@"点赞成功!"];
             NSSLog(@"赞!!!");

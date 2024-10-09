@@ -103,7 +103,7 @@ CLLocationManagerDelegate
 //    }
     self.view.backgroundColor = [UIColor blackColor];
     if (self.manager.configuration.cameraCanLocation && HX_ALLOW_LOCATION) {
-        if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusDenied) {
+        if (self.locationManager.authorizationStatus != kCLAuthorizationStatusDenied) {
             [self.locationManager startUpdatingLocation];
         }
     }
@@ -324,7 +324,7 @@ CLLocationManagerDelegate
 #pragma clang diagnostic pop
     AVCaptureConnection *previewLayerConnection = [(AVCaptureVideoPreviewLayer *)self.previewView.previewLayer connection];
     if ([previewLayerConnection isVideoOrientationSupported])
-        [previewLayerConnection setVideoOrientation:(AVCaptureVideoOrientation)[[UIApplication sharedApplication] statusBarOrientation]];
+        [previewLayerConnection setVideoOrientation:(AVCaptureVideoOrientation)[HXPhotoTools keyWindowScene].interfaceOrientation];
     
     [self preferredStatusBarUpdateAnimation];
     if (self.manager.viewWillAppear) {
@@ -910,18 +910,20 @@ CLLocationManagerDelegate
 }
 - (void)didVideoCropBtnClick {
     [self.playVideoView.playerLayer.player pause];
-    [self.playVideoView.playerLayer.player.currentItem seekToTime:CMTimeMake(0, 1)];
     HXWeakSelf
-    [self hx_presentVideoEditViewControllerWithManager:self.manager videoURL:self.videoURL done:^(HXPhotoModel *beforeModel, HXPhotoModel *afterModel, HXVideoEditViewController *viewController) {
-        [weakSelf doneCompleteWithModel:afterModel];
-        BOOL cameraFinishDismissAnimated = weakSelf.manager.cameraFinishDismissAnimated;
-        [weakSelf.presentingViewController dismissViewControllerAnimated:cameraFinishDismissAnimated completion:^{
-            if ([weakSelf.delegate respondsToSelector:@selector(customCameraViewControllerFinishDismissCompletion:)]) {
-                [weakSelf.delegate customCameraViewControllerFinishDismissCompletion:weakSelf];
-            }
+    [self.playVideoView.playerLayer.player.currentItem seekToTime:CMTimeMake(0, 1) completionHandler:^(BOOL finished) {
+        HXStrongSelf
+        [strongSelf hx_presentVideoEditViewControllerWithManager:self.manager videoURL:self.videoURL done:^(HXPhotoModel *beforeModel, HXPhotoModel *afterModel, HXVideoEditViewController *viewController) {
+            [strongSelf doneCompleteWithModel:afterModel];
+            BOOL cameraFinishDismissAnimated = strongSelf.manager.cameraFinishDismissAnimated;
+            [strongSelf.presentingViewController dismissViewControllerAnimated:cameraFinishDismissAnimated completion:^{
+                if ([strongSelf.delegate respondsToSelector:@selector(customCameraViewControllerFinishDismissCompletion:)]) {
+                    [strongSelf.delegate customCameraViewControllerFinishDismissCompletion:strongSelf];
+                }
+            }];
+        } cancel:^(HXVideoEditViewController *viewController) {
+            [strongSelf.playVideoView.playerLayer.player play];
         }];
-    } cancel:^(HXVideoEditViewController *viewController) {
-        [weakSelf.playVideoView.playerLayer.player play];
     }];
 }
 - (UIVisualEffectView *)effectView {
@@ -991,8 +993,11 @@ CLLocationManagerDelegate
 }
 
 - (void)pausePlayerNotifacation {
-    [self.playerLayer.player.currentItem seekToTime:CMTimeMake(0, 1)];
-    [self.playerLayer.player play];
+    HXWeakSelf
+    [self.playerLayer.player.currentItem seekToTime:CMTimeMake(0, 1) completionHandler:^(BOOL finished) {
+        HXStrongSelf
+        [strongSelf.playerLayer.player play];
+    }];
 }
 - (void)stopPlay {
     [self.playerLayer.player pause];

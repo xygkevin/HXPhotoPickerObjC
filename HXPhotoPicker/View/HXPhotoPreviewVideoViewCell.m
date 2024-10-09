@@ -84,7 +84,7 @@
 }
 - (void)layoutSubviews {
     [super layoutSubviews];
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown || HX_UI_IS_IPAD) {
         CGFloat sliderY = HX_IS_IPhoneX_All ? self.hx_h - hxBottomMargin - 50 : self.hx_h - 50;
         if (self.didAddBottomPageControl) {

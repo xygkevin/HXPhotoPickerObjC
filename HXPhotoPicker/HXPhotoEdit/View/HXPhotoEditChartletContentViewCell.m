@@ -28,7 +28,7 @@
         [self.collectionView setContentInsetAdjustmentBehavior:UIScrollViewContentInsetAdjustmentNever];
     }
     CGFloat width;
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown || HX_UI_IS_IPAD) {
         width = (HX_ScreenWidth - 5 * 20) / 4;
         self.flowLayout.sectionInset = UIEdgeInsetsMake(75, 20, 20, 20);

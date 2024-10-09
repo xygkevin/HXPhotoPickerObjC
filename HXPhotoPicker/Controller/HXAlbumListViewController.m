@@ -123,7 +123,7 @@ UITableViewDelegate
     self.orientationDidChange = YES;
 }
 - (void)changeSubviewFrame {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     CGFloat navBarHeight = hxNavigationBarHeight;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored"-Wdeprecated-declarations"

@@ -132,7 +132,7 @@
     selectView.cancelClick = cancelClick;
     selectView.showTopLineView = showTopLineView;
     selectView.modelArray = models;
-    [[UIApplication sharedApplication].keyWindow addSubview:selectView];
+    [[HXPhotoTools keyWindow] addSubview:selectView];
     [selectView showView];
     return selectView;
 }
@@ -610,7 +610,7 @@
 }
 - (void)layoutSubviews {
     [super layoutSubviews];
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     BOOL isLandscape = orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight;
     CGFloat margin = isLandscape ? hxBottomMargin + 10 : 10;
     if (HX_IS_IPhoneX_All) {

@@ -217,7 +217,7 @@
     self.orientationDidChange = YES;
 }
 - (void)changeSubviewFrame {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     CGFloat leftMargin = hxBottomMargin;
     if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown || HX_UI_IS_IPAD) {
         leftMargin = 0;
@@ -428,7 +428,7 @@
     
     CGFloat imageX = (self.editingView.clipZoomView.hx_w / screenScale - self.editingView.clippingView.hx_w) / 2 * screenScale;
     CGFloat imageY = (self.editingView.clipZoomView.hx_h / screenScale - self.editingView.clippingView.hx_h) / 2 * screenScale;
-    CGRect rect = [self.editingView convertRect:CGRectMake(imageX, imageY, width, height) toView:[UIApplication sharedApplication].keyWindow];
+    CGRect rect = [self.editingView convertRect:CGRectMake(imageX, imageY, width, height) toView:[HXPhotoTools keyWindow]];
     return rect;
 }
 - (UIImage *)getCurrentImage {

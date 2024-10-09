@@ -163,4 +163,8 @@
 /// 传统屏幕(iPhoneX之前的直角屏)
 + (BOOL)isTraditionalScreen;
 
++ (UIWindowScene * _Nullable)keyWindowScene;
+
++ (UIWindow * _Nullable)keyWindow;
+
 @end

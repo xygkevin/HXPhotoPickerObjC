@@ -99,28 +99,17 @@ HX_PhotoEditViewControllerDelegate
     if (_collectionView) {
         [self.collectionView.layer removeAllAnimations];
     }
-    if (self.manager.configuration.open3DTouchPreview) {
-        if (self.previewingContext) {
-            if (@available(iOS 9.0, *)) {
-                [self unregisterForPreviewingWithContext:self.previewingContext];
-            }
-        }
-    }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
     [super traitCollectionDidChange:previousTraitCollection];
-#ifdef __IPHONE_13_0
-    if (@available(iOS 13.0, *)) {
-        if ([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
-            [self changeColor];
-            [self changeStatusBarStyle];
-            [self setNeedsStatusBarAppearanceUpdate];
-            UIColor *authorizationColor = self.manager.configuration.authorizationTipColor;
-            _authorizationLb.textColor = [HXPhotoCommon photoCommon].isDark ? [UIColor whiteColor] : authorizationColor;
-        }
+    if ([self.traitCollection hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
+        [self changeColor];
+        [self changeStatusBarStyle];
+        [self setNeedsStatusBarAppearanceUpdate];
+        UIColor *authorizationColor = self.manager.configuration.authorizationTipColor;
+        _authorizationLb.textColor = [HXPhotoCommon photoCommon].isDark ? [UIColor whiteColor] : authorizationColor;
     }
-#endif
 }
 - (UIStatusBarStyle)preferredStatusBarStyle {
     if ([HXPhotoCommon photoCommon].isDark) {
@@ -254,22 +243,14 @@ HX_PhotoEditViewControllerDelegate
 }
 - (void)setupOtherConfiguration {
     if (self.manager.configuration.open3DTouchPreview) {
-//#ifdef __IPHONE_13_0
-//        if (@available(iOS 13.0, *)) {
-//            [HXPhotoCommon photoCommon].isHapticTouch = YES;
-//#else
-//        if ((NO)) {
-//#endif
-//        }else {
-            if ([self respondsToSelector:@selector(traitCollection)]) {
-                if ([self.traitCollection respondsToSelector:@selector(forceTouchCapability)]) {
-                    if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
-                        HXWeakSelf
-                        self.previewingContext = [self registerForPreviewingWithDelegate:weakSelf sourceView:weakSelf.collectionView];
-                    }
+        if ([self respondsToSelector:@selector(traitCollection)]) {
+            if ([self.traitCollection respondsToSelector:@selector(forceTouchCapability)]) {
+                if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+                    HXWeakSelf
+                    self.previewingContext = [self registerForPreviewingWithDelegate:weakSelf sourceView:weakSelf.collectionView];
                 }
             }
-//        }
+        }
     }
     if (!self.manager.configuration.singleSelected && self.manager.configuration.allowSlidingSelection) {
         UIPanGestureRecognizer *selectPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(selectPanGestureRecognizerClick:)];
@@ -383,7 +364,7 @@ HX_PhotoEditViewControllerDelegate
     }
     CGFloat cellHeight = self.manager.configuration.popupTableViewCellHeight;
     CGFloat albumHeight = cellHeight * count;
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     CGFloat albumMaxHeight;
     if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown || HX_UI_IS_IPAD) {
         albumMaxHeight = self.manager.configuration.popupTableViewHeight;
@@ -397,7 +378,7 @@ HX_PhotoEditViewControllerDelegate
 }
 - (void)changeSubviewFrame {
     CGFloat albumHeight = [self getAlbumHeight];
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     CGFloat navBarHeight = hxNavigationBarHeight;
     NSInteger lineCount = self.manager.configuration.rowCount;
 #pragma clang diagnostic push
@@ -572,10 +553,10 @@ HX_PhotoEditViewControllerDelegate
     return dateItem;
 }
 - (void)scrollToPoint:(HXPhotoViewCell *)cell rect:(CGRect)rect {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     CGFloat navBarHeight = hxNavigationBarHeight;
     if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft){
-        if ([UIApplication sharedApplication].statusBarHidden) {
+        if ([HXPhotoTools keyWindowScene].statusBarManager.statusBarHidden) {
             navBarHeight = self.navigationController.navigationBar.hx_h;
         }else {
             navBarHeight = self.navigationController.navigationBar.hx_h + 20;
@@ -626,7 +607,7 @@ HX_PhotoEditViewControllerDelegate
             return;
         }
         NSInteger rowCount = self.manager.configuration.rowCount;
-        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
         if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft){
             rowCount = self.manager.configuration.horizontalRowCount;
         }
@@ -2079,10 +2060,8 @@ HX_PhotoEditViewControllerDelegate
 }
 - (void)goSetup {
     NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-    if (@available(iOS 10.0, *)) {
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-    }else {
-        [[UIApplication sharedApplication] openURL:url];
     }
 }
 - (UIView *)albumBgView {
@@ -2171,12 +2150,12 @@ HX_PhotoEditViewControllerDelegate
         }
         self.albumBgView.hidden = NO;
         self.albumBgView.alpha = 0;
-        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
         CGFloat navBarHeight = hxNavigationBarHeight;
         if (orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown || HX_UI_IS_IPAD) {
             navBarHeight = hxNavigationBarHeight;
         }else if (orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft){
-            if ([UIApplication sharedApplication].statusBarHidden) {
+            if ([HXPhotoTools keyWindowScene].statusBarManager.statusBarHidden) {
                 navBarHeight = self.navigationController.navigationBar.hx_h;
             }else {
                 navBarHeight = self.navigationController.navigationBar.hx_h + 20;
@@ -2243,16 +2222,7 @@ HX_PhotoEditViewControllerDelegate
         [_collectionView registerClass:[HXPhotoCameraViewCell class] forCellWithReuseIdentifier:@"HXPhotoCameraViewCellId"];
         [_collectionView registerClass:[HXPhotoLimitViewCell class] forCellWithReuseIdentifier:@"HXPhotoLimitViewCellId"];
         [_collectionView registerClass:[HXPhotoViewSectionFooterView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"sectionFooterId"];
-        
-#ifdef __IPHONE_11_0
-        if (@available(iOS 11.0, *)) {
-            _collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-#else
-        if ((NO)) {
-#endif
-        } else {
-            self.automaticallyAdjustsScrollViewInsets = NO;
-        }
+        _collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }
     return _collectionView;
 }
@@ -3572,7 +3542,7 @@ HX_PhotoEditViewControllerDelegate
 }
 - (UIActivityIndicatorView *)loadingView {
     if (!_loadingView) {
-        _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
         _loadingView.hidden = YES;
         [self addSubview:_loadingView];
     }

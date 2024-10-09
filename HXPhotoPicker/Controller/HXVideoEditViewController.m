@@ -11,7 +11,7 @@
 
 #define hxValidRectX 30
 #define hxImageWidth 8
-#define hxVideoY ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeLeft || [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationLandscapeRight) ? 10 : hxTopMargin + 10
+#define hxVideoY ([HXPhotoTools keyWindowScene].interfaceOrientation == UIInterfaceOrientationLandscapeLeft || [HXPhotoTools keyWindowScene].interfaceOrientation == UIInterfaceOrientationLandscapeRight) ? 10 : hxTopMargin + 10
 #define hxCollectionViewY 25
 
 @interface HXVideoEditViewController ()
@@ -126,7 +126,7 @@ HXVideoEditBottomViewDelegate
     }
 }
 - (CGRect)getVideoRect {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     CGFloat bottomMargin = hxBottomMargin;
     if (orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight) {
         bottomMargin = 0;
@@ -152,7 +152,7 @@ HXVideoEditBottomViewDelegate
     return CGRectMake(hxValidRectX + (videoW - w) / 2, hxVideoY + (videoH - h) / 2, w, h);
 }
 - (void)changeSubviewFrame {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    UIInterfaceOrientation orientation = [HXPhotoTools keyWindowScene].interfaceOrientation;
     CGFloat itemH = self.itemHeight;
     CGFloat bottomMargin = hxBottomMargin;
     CGFloat bottomX = 0;

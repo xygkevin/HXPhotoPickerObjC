@@ -95,7 +95,7 @@
         CGFloat height = width;
         CGFloat imgWidth = self.imageSize.width;
         CGFloat imgHeight = self.imageSize.height;
-        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait || [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown || HX_UI_IS_IPAD) {
+        if ([HXPhotoTools keyWindowScene].interfaceOrientation == UIInterfaceOrientationPortrait || [HXPhotoTools keyWindowScene].interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown || HX_UI_IS_IPAD) {
             if (imgWidth > imgHeight) {
                 width = HX_ScreenWidth - 40;
             }else if (imgHeight > imgWidth) {
@@ -155,7 +155,7 @@
 
 - (UIActivityIndicatorView *)loadingView {
     if (!_loadingView) {
-        _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        _loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
         _loadingView.hidden = YES;
     }
     return _loadingView;

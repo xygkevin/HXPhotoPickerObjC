@@ -148,7 +148,7 @@ NSString *const kHXStickerViewData_movingView_superAngel = @"HXStickerViewData_m
         }
         if (!weakSelf.transhViewIsVisible) {
             weakSelf.transhViewIsVisible = YES;
-            [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.transhView];
+            [[HXPhotoTools keyWindow] addSubview:weakSelf.transhView];
             [weakSelf showTranshView];
         }
     };
@@ -156,19 +156,19 @@ NSString *const kHXStickerViewData_movingView_superAngel = @"HXStickerViewData_m
         if (!weakSelf.transhViewDidRemove) {
             if (!weakSelf.transhViewIsVisible) {
                 weakSelf.transhViewIsVisible = YES;
-                [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.transhView];
+                [[HXPhotoTools keyWindow] addSubview:weakSelf.transhView];
                 [weakSelf showTranshView];
             }else {
                 if (weakSelf.transhView.hx_y != HX_ScreenHeight - hxBottomMargin - 20 - weakSelf.transhView.hx_h ||
                     weakSelf.transhView.alpha == 0) {
                     [weakSelf showTranshView];
                 }else if (!weakSelf.transhView.superview) {
-                    [[UIApplication sharedApplication].keyWindow addSubview:weakSelf.transhView];
+                    [[HXPhotoTools keyWindow] addSubview:weakSelf.transhView];
                     [weakSelf showTranshView];
                 }
             }
         }
-        CGPoint point = [pan locationInView:[UIApplication sharedApplication].keyWindow];
+        CGPoint point = [pan locationInView:[HXPhotoTools keyWindow]];
         if (CGRectContainsPoint(weakSelf.transhView.frame, point) && !weakSelf.transhViewDidRemove) {
             weakSelf.transhView.inArea = YES;
             if (!weakSelf.hasImpactFeedback) {
@@ -263,7 +263,7 @@ NSString *const kHXStickerViewData_movingView_superAngel = @"HXStickerViewData_m
         }
     }
     itemView.isSelected = selected;
-    itemView.center = [self convertPoint:[UIApplication sharedApplication].keyWindow.center fromView:(UIView *)[UIApplication sharedApplication].keyWindow];
+    itemView.center = [self convertPoint:[HXPhotoTools keyWindow].center fromView:(UIView *)[HXPhotoTools keyWindow]];
     itemView.firstTouch = selected;
     [self addSubview:itemView];
     [itemView setScale:scale / self.screenScale rotation:radians isInitialize:NO isPinch:NO setMirror:YES];
@@ -276,7 +276,7 @@ NSString *const kHXStickerViewData_movingView_superAngel = @"HXStickerViewData_m
     if (self.addWindowCompletion) {
         self.addWindowCompletion = NO;
         CGFloat arg = itemView.arg - self.currentItemArg;
-        CGRect rect = [[UIApplication sharedApplication].keyWindow convertRect:itemView.frame toView:self];
+        CGRect rect = [[HXPhotoTools keyWindow] convertRect:itemView.frame toView:self];
         itemView.frame = rect;
         [self addSubview:itemView];
         if (self.mirrorType == HXPhotoClippingViewMirrorType_None) {
@@ -319,9 +319,9 @@ NSString *const kHXStickerViewData_movingView_superAngel = @"HXStickerViewData_m
     CGFloat radians = [self currentAngleRadians];
     self.currentItemDegrees = radians;
     
-    CGRect rect = [self convertRect:itemView.frame toView:[UIApplication sharedApplication].keyWindow];
+    CGRect rect = [self convertRect:itemView.frame toView:[HXPhotoTools keyWindow]];
     itemView.frame = rect;
-    [[UIApplication sharedApplication].keyWindow addSubview:itemView];
+    [[HXPhotoTools keyWindow] addSubview:itemView];
     
     if (self.mirrorType == HXPhotoClippingViewMirrorType_None) {
         [itemView setScale:itemView.scale rotation:itemView.arg + radians isInitialize:NO isPinch:NO setMirror:YES];

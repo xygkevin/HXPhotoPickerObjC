@@ -93,6 +93,7 @@
         _manager.configuration.saveSystemAblum = YES;
         _manager.configuration.selectTogether = YES;
         _manager.configuration.creationDateSort = YES;
+        _manager.configuration.languageType = HXPhotoLanguageTypeEn;
 //        _manager.configuration.supportRotation = NO;
 //        _manager.configuration.cameraCellShowPreview = NO;
 //        _manager.configuration.themeColor = [UIColor redColor];

@@ -182,7 +182,7 @@ static NSString *const kCellIdentifier = @"cell_identifier";
 //        label.textColor = UITraitCollection.currentTraitCollection.userInterfaceStyle == UIUserInterfaceStyleDark ? [UIColor whiteColor] : [UIColor hx_colorWithHexStr:@"#191918"];
 //    }
 //#endif
-//    [[UIApplication sharedApplication].keyWindow addSubview:label];
+//    [[HXPhotoTools keyWindow] addSubview:label];
 //    self.label = label;
 
 //     [UINavigationBar appearance].translucent = NO;
