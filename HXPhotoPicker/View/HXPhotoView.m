@@ -159,6 +159,7 @@
     self.spacing = 3;
     self.lineCount = 3;
     self.numOfLinesOld = 0;
+    self.previewLimit = NO;
     self.tag = 9999;
     _showAddCell = YES;
     self.tempShowAddCell = YES;
@@ -181,6 +182,10 @@
 - (void)jumpPreviewViewControllerWithModel:(HXPhotoModel *)model {
     if (![self.manager.afterSelectedArray containsObject:model]) {
         NSSLog(@"model有误!!!");
+        return;
+    }
+    if (self.previewLimit) {
+        NSSLog(@"禁止预览!!!");
         return;
     }
     HXPhotoPreviewViewController *vc = [[HXPhotoPreviewViewController alloc] init];

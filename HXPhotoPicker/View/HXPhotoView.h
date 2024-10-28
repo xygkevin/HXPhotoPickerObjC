@@ -79,6 +79,8 @@ typedef NS_ENUM(NSUInteger, HXPhotoViewPreViewShowStyle) {
 @property (assign, nonatomic) BOOL editEnabled;
 /// 是否显示添加的cell 默认 YES
 @property (assign, nonatomic) BOOL showAddCell;
+/// 是否禁止预览 默认 NO
+@property (assign, nonatomic) BOOL previewLimit;
 /// 预览大图时是否显示删除按钮
 @property (assign, nonatomic) BOOL previewShowDeleteButton;
 /// 添加按钮的图片

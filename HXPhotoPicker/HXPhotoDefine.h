@@ -73,7 +73,16 @@
 
 #define HX_PREFERS_STATUS_BAR_HIDDEN [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIViewControllerBasedStatusBarAppearance"] boolValue]
 
-#define HasAFNetworking (__has_include(<AFNetworking/AFNetworking.h>) || __has_include("AFNetworking.h"))
+//#define HasAFNetworking (__has_include(<AFNetworking/AFNetworking.h>) || __has_include("AFNetworking.h"))
+#if defined(__has_include)
+    #if (__has_include(<AFNetworking/AFNetworking.h>) || __has_include("AFNetworking.h"))
+        #define HasAFNetworking YES
+    #else
+        #define HasAFNetworking NO
+    #endif
+#else
+    #define HasAFNetworking NO
+#endif
 
 #define HasYYWebImage (__has_include(<YYWebImage/YYWebImage.h>) || __has_include("YYWebImage.h"))
 
