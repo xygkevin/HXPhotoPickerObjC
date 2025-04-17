@@ -169,6 +169,7 @@ static id instance;
             case HXPhotoLanguageTypeId : {
                 // 印尼语
                 language = @"id";
+            } break;
             case HXPhotoLanguageTypeFil : {
                 // 韩文
                 language = @"fil";
