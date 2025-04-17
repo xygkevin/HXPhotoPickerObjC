@@ -615,6 +615,18 @@
                     // 英文
                     _barTitle = [self.creationDate hx_dateStringWithFormat:@"dd MMM yyyy"];
                 } break;
+                case HXPhotoLanguageTypeFil: {
+                    // 菲律宾语（跟英语相近，用英式）
+                    _barTitle = [self.creationDate hx_dateStringWithFormat:@"dd MMM yyyy"];
+                } break;
+                case HXPhotoLanguageTypeTh: {
+                    // 泰语（泰国通常用 dd MMM yyyy）
+                    _barTitle = [self.creationDate hx_dateStringWithFormat:@"dd MMM yyyy"];
+                } break;
+                case HXPhotoLanguageTypeMs: {
+                    // 马来语（与印尼语相似）
+                    _barTitle = [self.creationDate hx_dateStringWithFormat:@"dd MMM yyyy"];
+                } break;
                 default : {
                     NSString *language = [NSLocale preferredLanguages].firstObject;
                     if ([language hasPrefix:@"zh"] ||

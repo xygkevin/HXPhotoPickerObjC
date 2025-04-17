@@ -169,6 +169,17 @@ static id instance;
             case HXPhotoLanguageTypeId : {
                 // 印尼语
                 language = @"id";
+            case HXPhotoLanguageTypeFil : {
+                // 韩文
+                language = @"fil";
+            } break;
+            case HXPhotoLanguageTypeMs : {
+                // 英语
+                language = @"ms";
+            } break;
+            case HXPhotoLanguageTypeTh : {
+                // 印尼语
+                language = @"th";
             } break;
             default : {
                 if ([language hasPrefix:@"en"]) {

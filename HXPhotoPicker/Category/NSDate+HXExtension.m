@@ -193,6 +193,15 @@
         case HXPhotoLanguageTypeId:
             locale = [[NSLocale alloc] initWithLocaleIdentifier:@"id"];
             break;
+        case HXPhotoLanguageTypeFil:
+            locale = [[NSLocale alloc] initWithLocaleIdentifier:@"fil"];
+            break;
+        case HXPhotoLanguageTypeMs:
+            locale = [[NSLocale alloc] initWithLocaleIdentifier:@"ms"];
+            break;
+        case HXPhotoLanguageTypeTh:
+            locale = [[NSLocale alloc] initWithLocaleIdentifier:@"th"];
+            break;
         default:
             break;
     }
