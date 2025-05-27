@@ -623,6 +623,10 @@
                     // 泰语（泰国通常用 dd MMM yyyy）
                     _barTitle = [self.creationDate hx_dateStringWithFormat:@"dd MMM yyyy"];
                 } break;
+                case HXPhotoLanguageTypeVi: {
+                    // 越南语（泰国通常用 dd MMM yyyy）
+                    _barTitle = [self.creationDate hx_dateStringWithFormat:@"dd MMM yyyy"];
+                } break;
                 case HXPhotoLanguageTypeMs: {
                     // 马来语（与印尼语相似）
                     _barTitle = [self.creationDate hx_dateStringWithFormat:@"dd MMM yyyy"];

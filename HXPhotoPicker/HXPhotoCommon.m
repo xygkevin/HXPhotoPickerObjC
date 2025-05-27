@@ -182,6 +182,10 @@ static id instance;
                 // 印尼语
                 language = @"th";
             } break;
+            case HXPhotoLanguageTypeTh : {
+                // 越南语
+                language = @"vi";
+            } break;
             default : {
                 if ([language hasPrefix:@"en"]) {
                     language = @"en";

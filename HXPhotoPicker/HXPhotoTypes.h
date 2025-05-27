@@ -66,7 +66,8 @@ typedef NS_ENUM(NSUInteger, HXPhotoLanguageType) {
     HXPhotoLanguageTypeId,      //!< 印尼
     HXPhotoLanguageTypeFil,     //!< 菲律宾
     HXPhotoLanguageTypeMs,      //!< 马来语
-    HXPhotoLanguageTypeTh       //!< 泰语
+    HXPhotoLanguageTypeTh,      //!< 泰语
+    HXPhotoLanguageTypeVi       //!< 越南语
 };
 
 typedef NS_ENUM(NSUInteger, HXPhotoStyle) {

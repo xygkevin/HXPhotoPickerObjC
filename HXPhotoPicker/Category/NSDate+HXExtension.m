@@ -202,6 +202,9 @@
         case HXPhotoLanguageTypeTh:
             locale = [[NSLocale alloc] initWithLocaleIdentifier:@"th"];
             break;
+        case HXPhotoLanguageTypeVi:
+            locale = [[NSLocale alloc] initWithLocaleIdentifier:@"vi"];
+            break;
         default:
             break;
     }
